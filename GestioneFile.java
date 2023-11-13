@@ -1,5 +1,7 @@
 package gestione_utenze;
 
+import java.util.Map;
+import java.util.HashMap;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.BufferedReader;
@@ -44,7 +46,7 @@ class GestioneFile {
     * true = Utente creato correttamente
     * false = Creazione utente fallita
     */
-   public boolean registraUtente(Utente utente)
+   public boolean registraUtente(Map<String, String> utente)
    {
       boolean registrato = false;
       
@@ -52,7 +54,7 @@ class GestioneFile {
       try (BufferedWriter bw = new BufferedWriter(new FileWriter(PATH_UTENTI, true))) {
 
          // Salvo su file i vari dati
-         bw.write(utente.getUsername() + "\n" + utente.getPassword() + "\n" + utente.getNome() + "\n" + utente.getCognome() + "\n" + utente.getEmail() + "\n");
+         bw.write(utente.get("username") + "\n" + utente.get("password") + "\n" + utente.get("nome") + "\n" + utente.get("cognome") + "\n" + utente.get("email") + "\n");
 
          registrato = true;
       } catch (IOException e) {
@@ -78,7 +80,7 @@ class GestioneFile {
     * true = Utente modificato correttamente
     * false = Modifica dati utente fallita
     */
-   public boolean modificaUtente(String username, Utente nUtente)
+   public boolean modificaUtente(String username, Map<String, String> nUtente)
    {
       boolean modificato = false;
 
@@ -97,37 +99,37 @@ class GestioneFile {
                // Inserisco i nuovi dati
                // Il readLine dopo la write serve
                // per ignorare il campo scritto sul file iniziale
-               if (nUtente.getUsername() == "") {
+               if (nUtente.get("username").equals("")) {
                   bw.write(tempUsername + "\n");
                } else {
-                  bw.write(nUtente.getUsername() + "\n");
+                  bw.write(nUtente.get("username") + "\n");
                }
 
-               if (nUtente.getPassword() == "") {
+               if (nUtente.get("password").equals("")) {
                   bw.write(br.readLine() + "\n");
                } else {
-                  bw.write(nUtente.getPassword() + "\n");
+                  bw.write(nUtente.get("password") + "\n");
                   br.readLine();
                }
 
-               if (nUtente.getNome() == "") {
+               if (nUtente.get("nome").equals("")) {
                   bw.write(br.readLine() + "\n");
                } else {
-                  bw.write(nUtente.getNome() + "\n");
+                  bw.write(nUtente.get("nome") + "\n");
                   br.readLine();
                }
 
-               if (nUtente.getCognome() == "") {
+               if (nUtente.get("cognome").equals("")) {
                   bw.write(br.readLine() + "\n");
                } else {
-                  bw.write(nUtente.getCognome() + "\n");
+                  bw.write(nUtente.get("cognome") + "\n");
                   br.readLine();
                }
 
-               if (nUtente.getEmail() == "") {
+               if (nUtente.get("email").equals("")) {
                   bw.write(br.readLine() + "\n");
                } else {
-                  bw.write(nUtente.getEmail() + "\n");
+                  bw.write(nUtente.get("email") + "\n");
                   br.readLine();
                }
 
@@ -141,7 +143,6 @@ class GestioneFile {
                bw.write(br.readLine() + "\n");
             }
          }
-
       } catch (IOException e) {
          e.printStackTrace();
       }
