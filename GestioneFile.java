@@ -78,6 +78,54 @@ class GestioneFile {
       return utenti;
    }
 
+   public boolean eliminaAccount(String username, String password) {
+      boolean eliminato = false;
+
+      // Apro in lettura il file delle utenze
+      try (BufferedReader br = new BufferedReader(new FileReader(PATH_UTENTI));
+           BufferedWriter bw = new BufferedWriter(new FileWriter(PATH_UTENTI + ".temp", false))) {
+
+         // Ciclo per scorrere gli utenti
+         // inizializzando l'username letto
+         String tempUsername;
+         String tempPassword;
+         while ((tempUsername = br.readLine()) != null) {
+            
+            // Ottengo la password
+            tempPassword = br.readLine();
+
+            // Verifico se ho trovato l'username
+            if (tempUsername.equals(username) && tempPassword.equals(password)) {
+
+               // Leggo i restanti campi
+               for (int i = 0; i < 3; i++) {
+                  br.readLine();
+               }
+
+               // Aggiorno il flag
+               eliminato = true;
+            } else {
+               // Scrivo i dati dell'utente nel nuovo file temporaneo
+               bw.write(tempUsername + "\n");
+               bw.write(tempPassword + "\n");
+
+               // Scrivo i restanti campi
+               for (int i = 0; i < 3; i++) {
+                  bw.write(br.readLine() + "\n");
+               }
+            }
+         }
+      } catch (IOException e) {
+         e.printStackTrace();
+      }
+
+      // Aggiorno il contenuto del file principale
+      // aggiornando il valore del flag
+      eliminato = aggiornaFile(PATH_UTENTI + ".temp", PATH_UTENTI) && eliminato;
+
+      return eliminato;
+   }
+
    /**
     * @brief
     * Metodo per la registrazione di un utenza su file
@@ -184,10 +232,11 @@ class GestioneFile {
             } else {
                // Scrivo i dati dell'utente nel nuovo file temporaneo
                bw.write(tempUsername + "\n");
-               bw.write(br.readLine() + "\n");
-               bw.write(br.readLine() + "\n");
-               bw.write(br.readLine() + "\n");
-               bw.write(br.readLine() + "\n");
+
+               // Scrivo i restanti campi
+               for (int i = 0; i < 4; i++) {
+                  bw.write(br.readLine() + "\n");
+               }
             }
          }
       } catch (IOException e) {
