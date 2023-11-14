@@ -62,7 +62,10 @@ public class Interfaccia {
     }
 
     private void interfacciaRegistrazione() {
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/interfaccia
         // Implementazione della registrazione
         System.out.println("");
         System.out.println("-------------------------");
@@ -81,7 +84,10 @@ public class Interfaccia {
     }
 
     private void interfacciaLogin() {
+<<<<<<< HEAD
         
+=======
+>>>>>>> origin/interfaccia
         // Implementazione del login
         System.out.println("");
         System.out.println("-------------------------");
