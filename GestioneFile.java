@@ -1,5 +1,7 @@
 package gestione_utenze;
 
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import java.io.BufferedWriter;
@@ -34,6 +36,50 @@ class GestioneFile {
 
    /**
     * @brief
+    * Metodo per ottenere una lista di utenti
+    * incapsulati in delle HashMap
+    * 
+    * @return
+    * Lista di utenti incapsulati nelle HashMap
+    */
+   public List<Map<String, String>> ottieniUtenti() {
+
+      // Alloco la lista di HashMap da restituire
+      List<Map<String, String>> utenti = new ArrayList<>();
+
+      // HashMap temporanea
+      Map<String, String> tempUtente;
+
+      // Apro il file in lettura per ottenere i dati degli utenti
+      try (BufferedReader br = new BufferedReader(new FileReader(PATH_UTENTI))) {
+
+         // Leggo fino alla fine del file
+         String tempUsername;
+         while ((tempUsername = br.readLine()) != null) {
+            
+            // Inizializzo l'HashMap temporanea
+            tempUtente = new HashMap<>();
+
+            // Ottengo e conservo i vari dati
+            tempUtente.put("username", tempUsername);
+            tempUtente.put("password", br.readLine());
+            tempUtente.put("nome", br.readLine());
+            tempUtente.put("cognome", br.readLine());
+            tempUtente.put("email", br.readLine());
+
+            // Aggiungo l'utente alla lista
+            utenti.add(tempUtente);
+         }
+      } catch (IOException e) {
+         e.printStackTrace();
+      }
+
+      // Restituisco la lista degli utenti
+      return utenti;
+   }
+
+   /**
+    * @brief
     * Metodo per la registrazione di un utenza su file
     * 
     * @param username
@@ -46,8 +92,8 @@ class GestioneFile {
     * true = Utente creato correttamente
     * false = Creazione utente fallita
     */
-   public boolean registraUtente(Map<String, String> utente)
-   {
+   public boolean registraUtente(Map<String, String> utente) {
+
       boolean registrato = false;
       
       // Apro in append il file delle utenze
@@ -80,8 +126,8 @@ class GestioneFile {
     * true = Utente modificato correttamente
     * false = Modifica dati utente fallita
     */
-   public boolean modificaUtente(String username, Map<String, String> nUtente)
-   {
+   public boolean modificaUtente(String username, Map<String, String> nUtente) {
+
       boolean modificato = false;
 
       // Apro in lettura il file delle utenze
@@ -137,6 +183,7 @@ class GestioneFile {
                modificato = true;
             } else {
                // Scrivo i dati dell'utente nel nuovo file temporaneo
+               bw.write(tempUsername + "\n");
                bw.write(br.readLine() + "\n");
                bw.write(br.readLine() + "\n");
                bw.write(br.readLine() + "\n");
