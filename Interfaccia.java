@@ -47,7 +47,7 @@ public class Interfaccia {
         }
     }
 
-    private void registrazione() {
+    private void interfacciaRegistrazione() {
         // Implementazione della registrazione
         System.out.println("");
         System.out.println("-------------------------");
@@ -59,7 +59,7 @@ public class Interfaccia {
         String password = input.next();
         
         // Registrazione dell'utente
-        registrazione(username, password);
+        //md.registrazione(username, password);
 
         // Interfaccia per il login
         interfacciaLogin();
@@ -77,6 +77,7 @@ public class Interfaccia {
         String password = input.next();
 
         // Login dell'utente
+        //md.login
         if (login(username, password)) {
 
             // Mostro l'interfaccia per effettuare le operazioni
@@ -99,7 +100,7 @@ public class Interfaccia {
             System.out.println("1: Inserisci informazioni");
             System.out.println("2: Visualizza informazioni");
             System.out.println("3: Modifica informazioni");
-            System.out.println("4: Elimina account");
+            System.out.println("4: Eliminazione account");
             System.out.println("5: Esci dal programma");
             System.out.print("Scegli la funzione > ");
             scelta = input.nextInt();
