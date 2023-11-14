@@ -25,26 +25,40 @@ public class Interfaccia {
 
         int scelta;
 
-        // Implementazione del menu principale
-        System.out.println("1: Registrazione");
-        System.out.println("2: Login");
-        System.out.println("3: Esci dal programma");
-        System.out.print("Scegli un'opzione > ");
-        scelta = input.nextInt();
+        do {
+            // Implementazione del menu principale
+            System.out.println("1: Registrazione");
+            System.out.println("2: Login");
+            System.out.println("3: Esci dal programma");
+            System.out.print("Scegli un'opzione > ");
+            scelta = input.nextInt();
 
-        switch (scelta) {
-            case 1:
-                registrazione();
-                break;
-            case 2:
-                login();
-                break;
-            case 3:
-                System.out.println("Arrivederci!");
-                break;
-            default:
-                System.out.println("Opzione non valida. Riprova.");
-        }
+            // Gestione scelta
+            switch (scelta) {
+                case 1: {
+
+                    interfacciaRegistrazione();
+
+                    break;
+                }
+                case 2: {
+
+                    interfacciaLogin();
+
+                    break;
+                }
+                case 3: {
+
+                    System.out.println("Arrivederci!");
+
+                    break;
+                }
+                default: {
+                    
+                    System.out.println("Opzione non valida. Riprova.");
+                }
+            }
+        } while (scelta != 3);
     }
 
     private void interfacciaRegistrazione() {
@@ -78,7 +92,7 @@ public class Interfaccia {
 
         // Login dell'utente
         //md.login
-        if (login(username, password)) {
+        /*if (login(username, password)) {
 
             // Mostro l'interfaccia per effettuare le operazioni
             // di CRUD sull'utente
@@ -88,6 +102,7 @@ public class Interfaccia {
             // Fallito il login mostro il menu principale
             menuPrincipale();
         }
+        */
     }
 
     // Implementazione dell'interfaccia dopo il login
@@ -129,7 +144,7 @@ public class Interfaccia {
                 case 2: {
                     
                     // Visualizzo le informazioni
-                    visualizzaInformazioni();
+                    //visualizzaInformazioni();
 
                     break;
                 }
@@ -163,7 +178,7 @@ public class Interfaccia {
                     if (risposta.equals("s")) {
 
                         // Rimuovo tutti i dati dell'account
-                        eliminaAccount();
+                        //eliminaAccount();
                         System.out.println("Account eliminato con successo!");
                     } else {
 
