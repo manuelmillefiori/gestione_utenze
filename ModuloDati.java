@@ -1,0 +1,187 @@
+package gestione_utenze;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+class ModuloDati{
+    //creo una list di map, che contengono le informazioni degli utenti
+    private List<Map<String, String>> utenti = new ArrayList<>();
+
+    //metodo creaUtente che mi controlla se l'utente esiste già, e se non esiste me lo crea
+    public void creaUtente(String username, String password){
+        
+        //creo una map temporanea a cui poi assegno i valori che mi sono stati dati 
+        Map<String, String> utenteT = new HashMap<>(); 
+        utenteT.put("username", username);
+        utenteT.put("password", password);
+
+        //inizializzo una variabile booleana a false
+        boolean ok=false;
+
+        //scorro tutti gli utenti e controllo se contengono l'username che ho dato a questo metodo
+        for(int i=0; i<utenti.size(); i++){
+            
+                if (utenti.get(i).containsValue(username)) {
+                    //se effettivamente l'utente già c'è all'interno della nostra list allora inizializzo ok a true
+                    ok=true;
+                    break; 
+                }else{
+                    //se invece non c'è ancora inizializzo ok a false
+                    ok=false;
+                }
+            
+        }
+        
+        //controllo dell'ok e messaggi di output
+        if(ok){
+            //messaggio di output nel caso in cui l'username è stato già registrato in precedenza
+            System.out.println("Nome utente gia in uso");
+        }else{
+            //nel caso in cui non è stato già registrato lo creo dandogli l'username e la password, ma mettendo gli altri campi vuoti
+            utenteT.put("username", username);
+            utenteT.put("password", password);
+            utenteT.put("nome", "");
+            utenteT.put("cognome", "");
+            utenteT.put("email", "");
+            utenti.add(utenteT);
+            //messaggio di output che mi conferma che l'utente è stato creato
+            System.out.println("UTENTE CREATO");
+        }
+    }
+
+    
+    //funzione che mi ritorna un valore true se il login si può effettuare e false se non si può effettuare
+    public boolean logIn(String username, String password){
+        //inizializzo una variabile booleana da returnare al main, e che modifico nei vari controlli
+        boolean ok=false;
+
+        //Scorro tutta la list di utenti
+        for(int i=0; i<utenti.size(); i++){
+            
+            //se la list non è vuota ma presenta già degli utenti allora mi entra nel codice
+            if(utenti.size()!=0){
+
+                //controllo se l'username inserito c'è nella list
+                if (utenti.get(i).containsValue(username)) {
+
+                    //controllo se la password che mi è arrivata è quella registrata per l'username che mi è arrivato
+                    if(utenti.get(i).get("password").equals(password)){
+
+                        //se tutte le condizioni sono vere allora mi inizializza la variabile ok a true
+                        ok=true;
+                        break;
+                    } 
+                }else{
+
+                    //se queste condizioni non sono vere allora il LogIn non si può effettuare
+                    ok=false;
+                }   
+            }
+        }   
+        //ritorno la variabile ok
+        return ok;
+    }
+
+
+    public Map<String, String> visualizzaInformazioni(String username) {
+        
+        //inizializzo una map da returnare con i valori che mi servono a null
+        Map<String, String> finalvalue = null;
+        boolean ok=false;
+
+
+        for(int i = 0; i < utenti.size(); i++) {
+            
+            //controllo che all'interno della lista c'è l'utente che io sto cercando
+            if (utenti.get(i).containsValue(username)) {
+                
+                //se l'utente già esiste inizializzo la map temporanea con le informazioni che devo stampare nel main
+                finalvalue=utenti.get(i);
+                break;
+            }
+        }
+
+        //se non ho trovato l'utente mi ritorna di default una map null
+        return finalvalue;
+    }
+
+    public void modificaInformazioni(String username, Map<String, String> mappa){
+    
+        //scorro la lista
+        for(int i=0; i<utenti.size(); i++){
+            //controllo che all'interno della lista c'è l'utente che io sto cercando
+            if (utenti.get(i).containsValue(username)) {
+
+
+                //se il nome non è null mi modifica il nome
+                if(!(mappa.get("nome").equals(""))){
+                    utenti.get(i).put("nome", mappa.get("nome"));
+                }
+
+                //se il cognome non è null mi modifica il cognome
+                if(!(mappa.get("cognome").equals(""))){
+                    utenti.get(i).put("cognome", mappa.get("cognome"));
+                }
+
+                //se lo username non è null mi modifica lo username
+                if(!(mappa.get("username").equals(""))){
+                    utenti.get(i).put("username", mappa.get("username"));
+                }
+
+                //se l'email non è null mi modifica l'email
+                if(!(mappa.get("email").equals(""))){
+                    utenti.get(i).put("email", mappa.get("email"));
+                }
+                
+                //se la password non è null mi modifica la password
+                if(!(mappa.get("password").equals(""))){
+                    utenti.get(i).put("password", mappa.get("password"));
+                }
+            }
+        }           
+    }
+
+
+    public void modificaPassword(String username, String passwordVecchia, String passwordNuova){
+        //scorro la lista
+        for(int i=0; i<utenti.size(); i++){
+            //controllo dello username
+            if(utenti.get(i).containsValue(username)){
+                //controllo della password
+                if(utenti.get(i).get("PASSWORD").equals(passwordVecchia)){
+                    //creo una nuova map temporanea che passerò alla funzione modificainformazioni
+                    Map<String, String> mappaT= new HashMap<>();
+                    mappaT.put("password", passwordNuova);
+                    modificaInformazioni(username, mappaT);
+                }
+            }
+        }
+    }
+
+    //metodo che mi permette di eliminare un account
+    public void eliminaAccount(String username, String password){
+
+        boolean ok=false;
+
+        for(int i=0; i<utenti.size(); i++){
+
+            //controllo che l'account esiste già all'interno della list
+            if(utenti.get(i).containsValue(username)){
+                
+                //controllo che la password che mi è stata data è valida per l'account
+                if(utenti.get(i).get("PASSWORD").equals(password)){
+                    //elimino l'account
+                    utenti.remove(utenti.get(i));
+                    break;
+                }
+            }
+        }
+
+        //messaggio di output per l'errore nel caso in cui inseriamo un username sbagliato
+        if(!ok){
+            System.out.println("Non abbiamo trovato l'username che hai inserito...");
+        }
+    }
+}
