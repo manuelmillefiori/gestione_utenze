@@ -1,5 +1,3 @@
-package gestione_utenze;
-
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -29,7 +27,7 @@ import java.nio.file.StandardCopyOption;
  * 
  * La riga vuota indica un campo vuoto
  */
-class GestioneFile {
+public class GestioneFile {
 
    // File delle utenze
    private final String PATH_UTENTI = "utenti.dat";

@@ -1,5 +1,3 @@
-package gestione_utenze;
-
 /**
  * TODO:
  * Limitare il numero di tentativi nel login
@@ -9,7 +7,7 @@ import java.util.Scanner;
 import java.util.Map;
 import java.util.HashMap;
 
-class Interfaccia {
+public class Interfaccia {
 
     // Handle per l'input
     private Scanner input;
@@ -109,6 +107,9 @@ class Interfaccia {
         String username = input.next();
         System.out.print("Inserisci la tua password: ");
         String password = input.next();
+
+        // Vado a capo
+        System.out.println();
 
         // Login dell'utente
         if (md.login(username, password)) {

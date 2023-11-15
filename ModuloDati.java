@@ -1,11 +1,12 @@
-package gestione_utenze;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
-class ModuloDati {
+public class ModuloDati {
     
     // Istanza per la gestione dei file
     private GestioneFile gf;
@@ -31,7 +32,7 @@ class ModuloDati {
         //creo una map temporanea a cui poi assegno i valori che mi sono stati dati 
         Map<String, String> utenteT = new HashMap<>(); 
         utenteT.put("username", username);
-        utenteT.put("password", password);
+        utenteT.put("password", sha256Hash(password));
 
         //inizializzo una variabile booleana a false
         boolean ok=false;
@@ -54,11 +55,12 @@ class ModuloDati {
         }else{
             //nel caso in cui non è stato già registrato lo creo dandogli l'username e la password, ma mettendo gli altri campi vuoti
             utenteT.put("username", username);
-            utenteT.put("password", password);
+            utenteT.put("password", sha256Hash(password));
             utenteT.put("nome", "");
             utenteT.put("cognome", "");
             utenteT.put("email", "");
             utenti.add(utenteT);
+
             //messaggio di output che mi conferma che l'utente è stato creato
             System.out.println("UTENTE CREATO");
 
@@ -83,7 +85,7 @@ class ModuloDati {
                 if (utenti.get(i).get("username").equals(username)) {
 
                     //controllo se la password che mi è arrivata è quella registrata per l'username che mi è arrivato
-                    if(utenti.get(i).get("password").equals(password)){
+                    if(utenti.get(i).get("password").equals(sha256Hash(password))) {
 
                         //se tutte le condizioni sono vere allora mi inizializza la variabile ok a true
                         ok=true;
@@ -170,10 +172,10 @@ class ModuloDati {
         for(int i = 0; i < utenti.size(); i++) {
 
             //controllo che all'interno della lista c'è l'utente che io sto cercando
-            if (utenti.get(i).get("username").equals(username) && utenti.get(i).get("password").equals(passwordVecchia)) {
+            if (utenti.get(i).get("username").equals(username) && utenti.get(i).get("password").equals(sha256Hash(passwordVecchia))) {
 
                 // Aggiorno la password
-                utenti.get(i).put("password", passwordNuova);
+                utenti.get(i).put("password", sha256Hash(passwordNuova));
                 
                 // Aggiorno il flag
                 ok = true;
@@ -182,7 +184,7 @@ class ModuloDati {
                 Map<String, String> mappa = new HashMap<>();
 
                 mappa.put("username", "");
-                mappa.put("password", passwordNuova);
+                mappa.put("password", sha256Hash(passwordNuova));
                 mappa.put("nome", "");
                 mappa.put("cognome", "");
                 mappa.put("email", "");
@@ -207,12 +209,12 @@ class ModuloDati {
             if(utenti.get(i).get("username").equals(username)){
                 
                 //controllo che la password che mi è stata data è valida per l'account
-                if(utenti.get(i).get("password").equals(password)){
+                if(utenti.get(i).get("password").equals(sha256Hash(password))){
                     //elimino l'account
                     utenti.remove(utenti.get(i));
 
                     // Elimino l'account su file
-                    ok = gf.eliminaAccount(username, password);
+                    ok = gf.eliminaAccount(username, sha256Hash(password));
 
                     break;
                 }
@@ -226,5 +228,45 @@ class ModuloDati {
 
         // Restituisco il flag di terminazione
         return ok;
+    }
+
+    /**
+     * @brief
+     * Algoritmo SHA-256 per effettuare
+     * l'hashing di una stringa
+     * 
+     * @param input
+     * Stringa da cui estrapolare l'hash
+     * 
+     * @return
+     * Hash della stringa
+     */
+    private static String sha256Hash(String input) {
+
+        String hash = null;
+
+        try {
+            
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+
+            // Utilizzo la codifica UTF-8 come charset
+            byte[] hashBytes = digest.digest(input.getBytes(StandardCharsets.UTF_8));
+
+            // Conversione dei byte dell'hash in esadecimale
+            StringBuilder hexStringBuilder = new StringBuilder();
+            for (byte hashByte : hashBytes) {
+
+                hexStringBuilder.append(String.format("%02x", hashByte));
+            }
+
+            // Aggiorno l'hash
+            hash = hexStringBuilder.toString();
+        } catch (NoSuchAlgorithmException e) {
+
+            e.printStackTrace();
+        }
+
+        // Restituisco l'hash calcolato
+        return hash;
     }
 }
