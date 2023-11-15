@@ -107,8 +107,6 @@ public class ModuloDati {
         
         //inizializzo una map da returnare con i valori che mi servono a null
         Map<String, String> finalvalue = null;
-        boolean ok=false;
-
 
         for(int i = 0; i < utenti.size(); i++) {
             
