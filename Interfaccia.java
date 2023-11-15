@@ -108,9 +108,6 @@ public class Interfaccia {
         System.out.print("Inserisci la tua password: ");
         String password = input.next();
 
-        // Vado a capo
-        System.out.println();
-
         // Login dell'utente
         if (md.login(username, password)) {
 
